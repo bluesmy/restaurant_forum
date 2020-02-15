@@ -32,4 +32,9 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
 })
 
+db.sync()
+  .then(() => {
+    console.log('DB synced');
+  });
+
 require('./routes')(app, passport)
