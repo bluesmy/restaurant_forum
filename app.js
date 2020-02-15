@@ -4,6 +4,7 @@ const db = require('./models') // 引入資料庫
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
+const passport = require('./config/passport')
 
 const app = express()
 const port = 3000
@@ -12,6 +13,8 @@ app.engine('handlebars', handlebars({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash())
 
 // 把 req.flash 放到 res.locals 裡面
@@ -25,4 +28,4 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
 })
 
-require('./routes')(app)
+require('./routes')(app, passport)
