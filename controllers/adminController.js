@@ -4,10 +4,14 @@ const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 
 const adminController = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll().then(restaurants => {
+    return Restaurant.findAll(
+      { include: [Category] }
+    ).then(restaurants => {
+      console.log(restaurants[0])
       return res.render('admin/restaurants', JSON.parse(JSON.stringify({ restaurants: restaurants })))
     })
   },
