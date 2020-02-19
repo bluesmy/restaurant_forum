@@ -6,11 +6,25 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{profile.name}}</h5>
-        <h6 class="card-text">{{profile.email}}</h6>
+        <p class="card-text">{{profile.email}}</p>
+        <h6>{{profile.Comments.length}} 已評論餐廳</h6>
         {{#ifCond profile.id user.id}}
         <a class="btn btn-primary" href="/users/{{profile.id}}/edit" role="button">Edit</a>
         {{/ifCond}}
       </div>
     </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header" style="font-weight: bold;">{{profile.Comments.length}} 已評論餐廳</div>
+  <div class="card-body">
+    {{#each profile.Comments}}
+    <div class="mr-2 mb-4" style="display:inline-block;">
+      <a href="/restaurants/{{this.Restaurant.id}}">
+        <img src="{{this.Restaurant.image}}" alt="restaurant image" width="100px" height="100px">
+      </a>
+    </div>
+    {{/each}}
   </div>
 </div>
