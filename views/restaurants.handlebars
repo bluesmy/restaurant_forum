@@ -47,9 +47,10 @@
         href="/restaurants?page={{this}}&categoryId={{../categoryId}}">{{this}}</a></li>
     {{/ifCond}}
     {{/each}}
-    <a class="page-link" href="/restaurants?page={{next}}&categoryId={{categoryId}}" aria-label="Next">
-      <span aria-hidden="true">&raquo;</span>
-    </a>
+    <li class="page-item">
+      <a class="page-link" href="/restaurants?page={{next}}&categoryId={{categoryId}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
     </li>
   </ul>
 </nav>
