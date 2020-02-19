@@ -142,11 +142,12 @@ const adminController = {
   putUsers: (req, res) => {
     return User.findByPk(req.params.id)
       .then(user => {
+        const { name, email, password, isAdmin } = user
         user.update({
-          name: user.name,
-          email: user.email,
-          password: user.password,
-          isAdmin: !user.isAdmin
+          name,
+          email,
+          password,
+          isAdmin: !isAdmin
         })
           .then((user) => {
             req.flash('success_messages', 'user was successfully to update')
