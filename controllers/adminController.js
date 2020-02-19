@@ -43,7 +43,7 @@ const adminController = {
           image: file ? img.data.link : null,
           CategoryId: req.body.categoryId
         })
-          .then((restaurant) => {
+          .then(restaurant => {
             req.flash('success_messages', 'restaurant was successfully created')
             res.redirect('/admin/restaurants')
           })
@@ -57,7 +57,7 @@ const adminController = {
         description: req.body.description,
         image: null,
         CategoryId: req.body.categoryId
-      }).then((restaurant) => {
+      }).then(restaurant => {
         req.flash('success_messages', 'restaurant was successfully created')
         return res.redirect('/admin/restaurants')
       })
@@ -88,7 +88,7 @@ const adminController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
-        return Restaurant.findByPk(req.params.id).then((restaurant) => {
+        return Restaurant.findByPk(req.params.id).then(restaurant => {
           restaurant.update({
             name: req.body.name,
             tel: req.body.tel,
@@ -105,7 +105,7 @@ const adminController = {
       })
     } else {
       return Restaurant.findByPk(req.params.id)
-        .then((restaurant) => {
+        .then(restaurant => {
           restaurant.update({
             name: req.body.name,
             tel: req.body.tel,
@@ -115,7 +115,7 @@ const adminController = {
             image: restaurant.image,
             CategoryId: req.body.categoryId
           })
-            .then((restaurant) => {
+            .then(restaurant => {
               req.flash('success_messages', 'restaurant was successfully to update')
               res.redirect('/admin/restaurants')
             })
@@ -125,9 +125,9 @@ const adminController = {
 
   deleteRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id)
-      .then((restaurant) => {
+      .then(restaurant => {
         restaurant.destroy()
-          .then((restaurant) => {
+          .then(restaurant => {
             res.redirect('/admin/restaurants')
           })
       })
@@ -141,7 +141,7 @@ const adminController = {
 
   putUsers: (req, res) => {
     return User.findByPk(req.params.id)
-      .then((user) => {
+      .then(user => {
         user.update({
           name: user.name,
           email: user.email,
