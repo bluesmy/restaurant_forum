@@ -49,8 +49,8 @@ const userController = {
 
   getUser: (req, res) => {
     const userId = Number(req.params.id)
-    return User.findByPk(userId, { include: [{ model: Comment, include: [Restaurant] }] }).then(results => {
-      res.render('users/profile', JSON.parse(JSON.stringify({ profile: results })))
+    return User.findByPk(userId, { nest: true, raw: true, include: [{ model: Comment, include: [Restaurant] }] }).then(results => {
+      res.render('users/profile', { profile: results })
     })
   },
 
@@ -61,7 +61,7 @@ const userController = {
       return res.redirect(`/users/${req.params.id}`)
     }
     return User.findByPk(userId).then(user => {
-      res.render('users/edit', JSON.parse(JSON.stringify({ profile: user })))
+      res.render('users/edit', { profile: user.get() })
     })
   },
 

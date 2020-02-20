@@ -28,8 +28,8 @@ let restController = {
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50)
       }))
-      Category.findAll().then(categories => {
-        return res.render('restaurants', JSON.parse(JSON.stringify({
+      Category.findAll({ raw: true }).then(categories => {
+        return res.render('restaurants', {
           restaurants: data,
           categories: categories,
           categoryId: categoryId,
@@ -37,7 +37,7 @@ let restController = {
           totalPage: totalPage,
           prev: prev,
           next, next
-        })))
+        })
       })
     })
   },

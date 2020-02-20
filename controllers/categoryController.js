@@ -2,14 +2,14 @@ const db = require('../models')
 const Category = db.Category
 let categoryController = {
   getCategories: (req, res) => {
-    return Category.findAll().then(categories => {
+    return Category.findAll({ raw: true }).then(categories => {
       if (req.params.id) {
-        Category.findByPk(req.params.id)
+        Category.findByPk(req.params.id, { raw: true })
           .then(category => {
-            return res.render('admin/categories', JSON.parse(JSON.stringify({ categories: categories, category: category })))
+            return res.render('admin/categories', { categories: categories, category: category })
           })
       } else {
-        return res.render('admin/categories', JSON.parse(JSON.stringify({ categories: categories })))
+        return res.render('admin/categories', { categories: categories })
       }
     })
   },
