@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
-const { User, Comment, Restaurant, Favorite, Like } = db
+const { User, Comment, Restaurant, Favorite, Like, Followship } = db
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -171,6 +171,31 @@ const userController = {
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
       return res.render('topUser', { users: users })
     })
+  },
+
+  addFollowing: (req, res) => {
+    return Followship.create({
+      followerId: req.user.id,
+      followingId: req.params.userId
+    })
+      .then(followship => {
+        return res.redirect('back')
+      })
+  },
+
+  removeFollowing: (req, res) => {
+    return Followship.findOne({
+      where: {
+        followerId: req.user.id,
+        followingId: req.params.userId
+      }
+    })
+      .then(followship => {
+        followship.destroy()
+          .then(followship => {
+            return res.redirect('back')
+          })
+      })
   }
 }
 
