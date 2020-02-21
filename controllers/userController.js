@@ -49,8 +49,18 @@ const userController = {
 
   getUser: (req, res) => {
     const userId = Number(req.params.id)
-    return User.findByPk(userId, { nest: true, raw: true, include: [{ model: Comment, include: [Restaurant] }] }).then(results => {
-      res.render('users/profile', { profile: results })
+    return User.findByPk(userId, {
+      include: [
+        { model: Comment, include: [Restaurant] },
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' }
+      ]
+    }).then(user => {
+      const set = new Set()
+      const nonRepeatComments = user.Comments.filter(comment => !set.has(comment.RestaurantId) ? set.add(comment.RestaurantId) : false)
+      const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+      res.render('users/profile', JSON.parse(JSON.stringify({ profile: user, isFollowed: isFollowed, nonRepeatComments: nonRepeatComments })))
     })
   },
 
