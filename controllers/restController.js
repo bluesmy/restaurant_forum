@@ -49,8 +49,7 @@ let restController = {
     }).then(restaurant => {
       const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
-      restaurant.viewCounts += 1
-      restaurant.save()
+      restaurant.increment('viewCounts')
       return res.render('restaurant', JSON.parse(JSON.stringify({ restaurant: restaurant, isFavorited: isFavorited, isLiked: isLiked })))
     })
   },
@@ -75,9 +74,10 @@ let restController = {
     })
   },
   getDashboard: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { nest: true, raw: true, include: [Category] }).then(restaurant => {
-      Comment.findAndCountAll({ nest: true, raw: true, where: { RestaurantId: req.params.id }, include: [Restaurant] }).then(comments => {
-        return res.render('dashboard', { restaurant: restaurant, comments: comments })
+    return Restaurant.findByPk(req.params.id, { include: [Category, { model: User, as: 'FavoritedUsers' }] }).then(restaurant => {
+      const favoritedUserCount = restaurant.FavoritedUsers.length
+      Comment.findAndCountAll({ where: { RestaurantId: req.params.id }, include: [Restaurant] }).then(comments => {
+        return res.render('dashboard', JSON.parse(JSON.stringify({ restaurant: restaurant, comments: comments, favoritedUserCount: favoritedUserCount })))
       })
     })
   },
