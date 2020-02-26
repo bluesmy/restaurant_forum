@@ -57,8 +57,10 @@ const userController = {
         { model: User, as: 'Followers' }
       ]
     }).then(user => {
-      const set = new Set()
-      const nonRepeatComments = user.Comments.filter(comment => !set.has(comment.RestaurantId) ? set.add(comment.RestaurantId) : false)
+      const nonRepeatComments = [...user.Comments.reduce(
+        (map, { Restaurant }) => map.set(Restaurant.id, Restaurant),
+        new Map()
+      ).values()]
       const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
       res.render('users/profile', JSON.parse(JSON.stringify({ profile: user, isFollowed: isFollowed, nonRepeatComments: nonRepeatComments })))
     })
