@@ -9,6 +9,12 @@ const adminService = {
     ).then(restaurants => {
       callback({ restaurants: restaurants })
     })
+  },
+
+  getRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id, { nest: true, raw: true, include: [Category] }).then(restaurant => {
+      callback({ restaurant: restaurant })
+    })
   }
 }
 
