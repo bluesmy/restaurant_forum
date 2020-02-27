@@ -6,7 +6,13 @@ const categoryService = require('../../services/categoryService.js')
 let categoryController = {
   getCategories: (req, res) => {
     categoryService.getCategories(req, res, (data) => {
-      res.json(data)
+      return res.json(data)
+    })
+  },
+
+  postCategory: (req, res) => {
+    categoryService.postCategory(req, res, (data) => {
+      return res.json(data)
     })
   }
 }
