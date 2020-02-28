@@ -3,6 +3,7 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
+const User = db.User
 
 const adminService = {
   getRestaurants: (req, res, callback) => {
@@ -114,6 +115,28 @@ const adminService = {
         restaurant.destroy()
           .then(restaurant => {
             callback({ status: 'success', message: '' })
+          })
+      })
+  },
+
+  getUsers: (req, res, callback) => {
+    return User.findAll({ raw: true }).then(users => {
+      callback({ users: users })
+    })
+  },
+
+  putUsers: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        const { name, email, password, isAdmin } = user
+        user.update({
+          name,
+          email,
+          password,
+          isAdmin: !isAdmin
+        })
+          .then(user => {
+            callback({ status: 'success', message: 'user was successfully to update' })
           })
       })
   }

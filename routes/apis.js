@@ -19,11 +19,17 @@ const authenticatedAdmin = (req, res, next) => {
   }
 }
 
+router.get('/admin', authenticated, authenticatedAdmin, (req, res) => {
+  res.redirect('/admin/restaurants')
+})
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants)
 router.post('/admin/restaurants', authenticated, authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRestaurant)
 router.delete('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.deleteRestaurant)
 router.put('/admin/restaurants/:id', authenticated, authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
+
+router.get('/admin/users', authenticated, authenticatedAdmin, adminController.getUsers)
+router.put('/admin/users/:id', authenticated, authenticatedAdmin, adminController.putUsers)
 
 router.get('/admin/categories', authenticated, authenticatedAdmin, categoryController.getCategories)
 router.post('/admin/categories', authenticated, authenticatedAdmin, categoryController.postCategory)
