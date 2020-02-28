@@ -4,6 +4,7 @@ const passport = require('../config/passport')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
+const restController = require('../controllers/api/restController.js')
 const userController = require('../controllers/api/userController.js')
 const adminController = require('../controllers/api/adminController.js')
 const categoryController = require('../controllers/api/categoryController.js')
@@ -19,8 +20,17 @@ const authenticatedAdmin = (req, res, next) => {
   }
 }
 
+router.get('/', authenticated, (req, res) => {
+  res.redirect('/api/restaurants')
+})
+router.get('/restaurants', authenticated, restController.getRestaurants)
+router.get('/restaurants/feeds', authenticated, restController.getFeeds)
+router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
+router.get('/restaurants/:id', authenticated, restController.getRestaurant)
+router.get('/restaurants/:id/dashboard/', authenticated, restController.getDashboard)
+
 router.get('/admin', authenticated, authenticatedAdmin, (req, res) => {
-  res.redirect('/admin/restaurants')
+  res.redirect('/api/admin/restaurants')
 })
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants)
 router.post('/admin/restaurants', authenticated, authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
