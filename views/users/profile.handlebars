@@ -17,10 +17,10 @@
         <a class="btn btn-primary" href="/users/{{profile.id}}/edit" role="button">Edit</a>
         {{else}}
         {{#if this.isFollowed }}
-        <form action="/following/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+        <form action="/following/{{profile.id}}?_method=DELETE" method="POST" style="display: contents;"><button
             type="submit" class="btn btn-danger">取消追蹤</button></form>
         {{else}}
-        <form action="/following/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
+        <form action="/following/{{profile.id}}" method="POST" style="display: contents;"><button type="submit"
             class="btn btn-primary">追蹤</button></form>
         {{/if}}
         {{/ifCond}}
